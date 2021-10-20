@@ -36,7 +36,7 @@ variables:
 
 deploy:
   stage: deploy
-  image: ruby:2.4
+  image: ruby:2.7
   script:
     - apt-get update -qy
     - apt-get install -y ruby-dev
