@@ -6,7 +6,7 @@ stages:
 
 build:
   stage: build
-  image: maven:4-jdk-17
+  image: maven:3.8.1-openjdk-17-slim
   script:
     - mv install -B
     - mvn clean package
@@ -23,7 +23,7 @@ build:
 
 checkstyle:
   stage: checkstyle
-  image: maven:4-jdk-17
+  image: maven:3.8.1-openjdk-17-slim
   script:
     - echo "Checkstyle Energy Utility Platform app"
     - mvn checkstyle:check
