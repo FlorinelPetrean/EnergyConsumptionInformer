@@ -28,11 +28,11 @@ checkstyle:
     - mvn checkstyle:check
 
 variables:
-  DB_IP: ec2-52-48-65-240.eu-west-1.compute.amazonaws.com
+  DB_IP: ec2-54-228-99-58.eu-west-1.compute.amazonaws.com
   DB_PORT: 5432
-  DB_USER: wlryktxyqpyomt
-  DB_PASSWORD: bee98a2afc7f0c3bcdd7df60ee7278ec5fa5cb4fb06a4039b1ffb1107d5851fd
-  DB_DBNAME: devidei2vqv0v4
+  DB_USER: wqpbyihwrpexor
+  DB_PASSWORD: ae89f89167d391d2e2ef72e5f45d933a8d25382b7fa84ba5438f74e49644a00a
+  DB_DBNAME: d1gutrkdpd57qh
 
 deploy:
   stage: deploy
@@ -41,6 +41,6 @@ deploy:
     - apt-get update -qy
     - apt-get install -y ruby-dev
     - gem install dpl
-    - dpl --provider=heroku --app=ds2021_energy_utlity_platform --api-key=$HEROKU_API_KEY
+    - dpl --provider=heroku --app=ds2021energyutlityplatform --api-key=$HEROKU_API_KEY
   only:
     - production
