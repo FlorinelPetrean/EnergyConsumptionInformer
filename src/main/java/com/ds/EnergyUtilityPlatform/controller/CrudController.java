@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 @Controller
 @CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
-@RequestMapping(path = "/api/eup/")
 public abstract class CrudController<T, U> {
     protected final ICrudService<T> service;
     protected final DtoMapper dtoMapper;

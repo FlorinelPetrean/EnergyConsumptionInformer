@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/sensor")
+@RequestMapping(path = "/api/sensor")
 public class SensorController extends CrudController<Sensor, SensorDto> {
     private final SensorService sensorService;
 
