@@ -1,17 +1,19 @@
 package com.ds.EnergyUtilityPlatform.model.entity;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import com.ds.EnergyUtilityPlatform.model.dto.DeviceDto;
+import com.ds.EnergyUtilityPlatform.model.dto.IDto;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
-public class Device {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class Device implements IEntity<Device>{
     @Id
     @Column(name = "id", nullable = false)
     private Long id;
@@ -26,6 +28,26 @@ public class Device {
     private Long maxEnergyConsumption;
 
     @Column
-    private Float avgEnergyConsumpution;
+    private Float avgEnergyConsumption;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "sensor_id", referencedColumnName = "id")
+    private Sensor sensor;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private AppUser user;
+
+
+    @Override
+    public Device toEntity(IDto<Device> dto) {
+        DeviceDto deviceDto = (DeviceDto) dto;
+        return Device.builder()
+                .id(deviceDto.getId())
+                .description(deviceDto.getDescription())
+                .address(deviceDto.getAddress())
+                .maxEnergyConsumption(deviceDto.getMaxEnergyConsumption())
+                .avgEnergyConsumption(deviceDto.getAvgEnergyConsumption())
+                .build();
+    }
 }
