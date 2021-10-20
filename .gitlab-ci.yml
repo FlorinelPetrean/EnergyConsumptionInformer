@@ -1,6 +1,6 @@
 stages:
   - build
-  #  - test
+  - test
   - checkstyle
   - deploy
 
@@ -10,14 +10,14 @@ build:
   script:
     - mvn clean package
 
-#test:
-#  stage: test
-#  image: maven:3.3.9-jdk-8
-#  script:
-#    - echo "Test DEMO app"
-#    - mvn test && mvn jacoco:report
-#    - cat target/site/jacoco/index.html | grep -o '.*'
-#  coverage: "/Total.*?([0-9]{1,3})%/"
+test:
+  stage: test
+  image: maven:3.8.1-openjdk-17-slim
+  script:
+    - echo "Test DEMO app"
+    - mvn test && mvn jacoco:report
+    - cat target/site/jacoco/index.html | grep -o '.*'
+  coverage: "/Total.*?([0-9]{1,3})%/"
 
 
 checkstyle:
