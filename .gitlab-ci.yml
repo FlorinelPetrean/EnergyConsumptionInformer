@@ -6,13 +6,13 @@ stages:
 
 build:
   stage: build
-  image: maven:3.8.3-adoptopenjdk-11
+  image: maven:3.8.3-eclipse-temurin-11
   script:
     - mvn clean package
 
 test:
   stage: test
-  image: maven:3.8.3-adoptopenjdk-11
+  image: maven:3.8.3-eclipse-temurin-11
   script:
     - echo "Test EnergyUtilityPlatform app"
     - mvn test && mvn jacoco:report
@@ -22,7 +22,7 @@ test:
 
 checkstyle:
   stage: checkstyle
-  image: maven:3.8.3-adoptopenjdk-11
+  image: maven:3.8.3-eclipse-temurin-11
   script:
     - echo "Checkstyle Energy Utility Platform app"
     - mvn checkstyle:check
