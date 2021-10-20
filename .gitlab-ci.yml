@@ -6,8 +6,9 @@ stages:
 
 build:
   stage: build
-  image: maven:3-jdk-11
+  image: maven:4-jdk-17
   script:
+    - mv install -B
     - mvn clean package
 
 #test:
@@ -22,7 +23,7 @@ build:
 
 checkstyle:
   stage: checkstyle
-  image: maven:3-jdk-11
+  image: maven:4-jdk-17
   script:
     - echo "Checkstyle Energy Utility Platform app"
     - mvn checkstyle:check
