@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AppUser implements IEntity<AppUser>{
     @Id
-    @Column(name = "id", nullable = false)
+    @Column(nullable = false)
     private Long id;
 
     @Column
