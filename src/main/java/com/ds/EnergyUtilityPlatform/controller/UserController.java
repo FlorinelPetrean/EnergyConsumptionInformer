@@ -8,14 +8,13 @@ import com.ds.EnergyUtilityPlatform.model.entity.AppUser;
 import com.ds.EnergyUtilityPlatform.service.ICrudService;
 import com.ds.EnergyUtilityPlatform.service.UserService;
 import com.ds.EnergyUtilityPlatform.utils.JwtUtility;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/user")
+@RequestMapping(path = "/api/user")
 public class UserController extends CrudController<AppUser, UserDto> {
     private final UserService userService;
     private final JwtUtility jwtUtility;

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "/device")
+@RequestMapping(path = "/api/device")
 public class DeviceController extends CrudController<Device, DeviceDto> {
     private final DeviceService deviceService;
 
