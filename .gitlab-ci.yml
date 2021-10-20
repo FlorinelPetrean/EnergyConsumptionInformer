@@ -1,12 +1,12 @@
 stages:
   - build
-#  - test
+  #  - test
   - checkstyle
   - deploy
 
 build:
   stage: build
-  image: maven:3.3.9-jdk-8
+  image: maven:3-jdk-11
   script:
     - mvn clean package
 
@@ -22,7 +22,7 @@ build:
 
 checkstyle:
   stage: checkstyle
-  image: maven:3.3.9-jdk-8
+  image: maven:3-jdk-11
   script:
     - echo "Checkstyle Energy Utility Platform app"
     - mvn checkstyle:check
