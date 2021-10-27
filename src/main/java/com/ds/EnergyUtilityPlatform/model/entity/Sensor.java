@@ -4,20 +4,20 @@ package com.ds.EnergyUtilityPlatform.model.entity;
 import com.ds.EnergyUtilityPlatform.model.dto.IDto;
 import com.ds.EnergyUtilityPlatform.model.dto.SensorDto;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
 @Builder
+@Component
 @AllArgsConstructor
 @NoArgsConstructor
 public class Sensor implements IEntity<Sensor>{
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -25,6 +25,10 @@ public class Sensor implements IEntity<Sensor>{
 
     @Column
     private Long maxValue;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "device_id", referencedColumnName = "id")
+    private Device device;
 
     @Override
     public Sensor toEntity(IDto<Sensor> dto) {

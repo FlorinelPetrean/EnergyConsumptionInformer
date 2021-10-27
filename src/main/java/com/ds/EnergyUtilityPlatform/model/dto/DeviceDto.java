@@ -3,10 +3,12 @@ package com.ds.EnergyUtilityPlatform.model.dto;
 
 import com.ds.EnergyUtilityPlatform.model.entity.Device;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 
 @Builder
 @Data
+@Component
 @AllArgsConstructor
 @NoArgsConstructor
 public class DeviceDto implements IDto<Device>{

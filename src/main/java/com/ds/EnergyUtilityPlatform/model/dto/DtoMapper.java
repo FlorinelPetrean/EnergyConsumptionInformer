@@ -22,6 +22,9 @@ public class DtoMapper {
         _handlerMap.put(UserDto.class, AppUser.class);
         _handlerMap.put(SensorDto.class, Sensor.class);
         _handlerMap.put(DeviceDto.class, Device.class);
+        _handlerMap.put(AppUser.class, UserDto.class);
+        _handlerMap.put(Sensor.class, SensorDto.class);
+        _handlerMap.put(Device.class, DeviceDto.class);
     }
 
 

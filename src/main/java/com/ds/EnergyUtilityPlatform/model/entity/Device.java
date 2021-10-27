@@ -4,6 +4,7 @@ package com.ds.EnergyUtilityPlatform.model.entity;
 import com.ds.EnergyUtilityPlatform.model.dto.DeviceDto;
 import com.ds.EnergyUtilityPlatform.model.dto.IDto;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
@@ -11,11 +12,12 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
+@Component
 @AllArgsConstructor
 @NoArgsConstructor
 public class Device implements IEntity<Device>{
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column

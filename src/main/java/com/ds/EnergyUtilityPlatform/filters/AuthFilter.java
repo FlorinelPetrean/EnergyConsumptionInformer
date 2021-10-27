@@ -51,7 +51,11 @@ public class AuthFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
-        return "/api/user/login".equals(path);
+        if (path.equals("/api/user/create"))
+            return true;
+        if (path.equals("/api/user/login"))
+            return true;
+        return false;
     }
 }
 
