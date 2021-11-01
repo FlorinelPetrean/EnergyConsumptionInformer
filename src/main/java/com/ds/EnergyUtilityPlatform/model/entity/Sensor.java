@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,6 +30,9 @@ public class Sensor implements IEntity<Sensor>{
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "device_id", referencedColumnName = "id")
     private Device device;
+
+    @OneToMany(mappedBy = "sensor", cascade = CascadeType.ALL)
+    private List<Record> records;
 
     @Override
     public Sensor toEntity(IDto<Sensor> dto) {

@@ -44,12 +44,16 @@ public class Device implements IEntity<Device>{
     @Override
     public Device toEntity(IDto<Device> dto) {
         DeviceDto deviceDto = (DeviceDto) dto;
+        AppUser user = AppUser.builder()
+                .username(deviceDto.getUsername())
+                .build();
         return Device.builder()
                 .id(deviceDto.getId())
                 .description(deviceDto.getDescription())
                 .address(deviceDto.getAddress())
                 .maxEnergyConsumption(deviceDto.getMaxEnergyConsumption())
                 .avgEnergyConsumption(deviceDto.getAvgEnergyConsumption())
+                .user(user)
                 .build();
     }
 }

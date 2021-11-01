@@ -22,13 +22,19 @@ public class DeviceDto implements IDto<Device>{
 
     private Float avgEnergyConsumption;
 
+    private String username;
+
     public DeviceDto toDto(Device device) {
+        String username = null;
+        if (device.getUser() != null)
+            username = device.getUser().getUsername();
         return DeviceDto.builder()
                 .id(device.getId())
                 .description(device.getDescription())
                 .address(device.getAddress())
                 .maxEnergyConsumption(device.getMaxEnergyConsumption())
                 .avgEnergyConsumption(device.getAvgEnergyConsumption())
+                .username(username)
                 .build();
     }
 }

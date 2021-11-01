@@ -20,11 +20,17 @@ public class SensorDto implements IDto<Sensor>{
 
     private Long maxValue;
 
+    private Long deviceId;
+
     public SensorDto toDto(Sensor sensor) {
+        Long deviceId = null;
+        if (sensor.getDevice() != null)
+            deviceId = sensor.getDevice().getId();
         return SensorDto.builder()
                 .id(sensor.getId())
                 .description(sensor.getDescription())
                 .maxValue(sensor.getMaxValue())
+                .deviceId(deviceId)
                 .build();
     }
 }
