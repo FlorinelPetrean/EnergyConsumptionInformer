@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import org.springframework.stereotype.Component;
 
 @Builder
 @Data
+@Component
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDto implements IDto<AppUser>{
@@ -17,25 +17,29 @@ public class UserDto implements IDto<AppUser>{
 
     private String username;
 
+    private String password;
+
     private String firstName;
 
     private String lastName;
 
     private String address;
 
-    private Date dateOfBirth;
+    private String dateOfBirth;
 
-    private boolean isAdmin;
+    private String role;
 
     public UserDto toDto(AppUser user) {
+        String dateOfBirth = user.getDateOfBirth().toString();
         return UserDto.builder()
                 .id(user.getId())
                 .username(user.getUsername())
+                .password(user.getPassword())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .address(user.getAddress())
-                .dateOfBirth(user.getDateOfBirth())
-                .isAdmin(user.isAdmin())
+                .dateOfBirth(dateOfBirth)
+                .role(user.getRole())
                 .build();
     }
 }

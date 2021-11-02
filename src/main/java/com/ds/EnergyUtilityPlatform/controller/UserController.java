@@ -1,17 +1,15 @@
 package com.ds.EnergyUtilityPlatform.controller;
 
-import com.ds.EnergyUtilityPlatform.model.dto.DtoMapper;
-import com.ds.EnergyUtilityPlatform.model.dto.JwtResponse;
-import com.ds.EnergyUtilityPlatform.model.dto.UserDetails;
-import com.ds.EnergyUtilityPlatform.model.dto.UserDto;
+import com.ds.EnergyUtilityPlatform.model.dto.*;
 import com.ds.EnergyUtilityPlatform.model.entity.AppUser;
+import com.ds.EnergyUtilityPlatform.model.entity.Device;
 import com.ds.EnergyUtilityPlatform.service.ICrudService;
 import com.ds.EnergyUtilityPlatform.service.UserService;
 import com.ds.EnergyUtilityPlatform.utils.JwtUtility;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/api/user")
@@ -23,6 +21,18 @@ public class UserController extends CrudController<AppUser, UserDto> {
         super(service, dtoMapper);
         this.userService = (UserService) service;
         this.jwtUtility = jwtUtility;
+    }
+
+    @GetMapping(path = "/u/{username}")
+    public UserDto getUserByUsername(@PathVariable String username) {
+        AppUser user = userService.findByUsername(username);
+        return (UserDto) dtoMapper.getDto(user);
+    }
+
+    @GetMapping(path = "/{username}/devices")
+    public List<DeviceDto> getUserDevices(@PathVariable String username) {
+        List<Device> all = userService.getUserDevices(username);
+        return all.stream().map(device -> (DeviceDto) dtoMapper.getDto(device)).collect(Collectors.toList());
     }
 
     @PostMapping("/login")

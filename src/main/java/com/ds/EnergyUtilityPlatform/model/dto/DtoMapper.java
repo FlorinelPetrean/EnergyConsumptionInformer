@@ -1,9 +1,6 @@
 package com.ds.EnergyUtilityPlatform.model.dto;
 
-import com.ds.EnergyUtilityPlatform.model.entity.AppUser;
-import com.ds.EnergyUtilityPlatform.model.entity.Device;
-import com.ds.EnergyUtilityPlatform.model.entity.IEntity;
-import com.ds.EnergyUtilityPlatform.model.entity.Sensor;
+import com.ds.EnergyUtilityPlatform.model.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -22,6 +19,11 @@ public class DtoMapper {
         _handlerMap.put(UserDto.class, AppUser.class);
         _handlerMap.put(SensorDto.class, Sensor.class);
         _handlerMap.put(DeviceDto.class, Device.class);
+        _handlerMap.put(AppUser.class, UserDto.class);
+        _handlerMap.put(Sensor.class, SensorDto.class);
+        _handlerMap.put(Device.class, DeviceDto.class);
+        _handlerMap.put(Record.class, RecordDto.class);
+        _handlerMap.put(RecordDto.class, Record.class);
     }
 
 

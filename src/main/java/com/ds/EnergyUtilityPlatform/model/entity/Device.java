@@ -4,6 +4,7 @@ package com.ds.EnergyUtilityPlatform.model.entity;
 import com.ds.EnergyUtilityPlatform.model.dto.DeviceDto;
 import com.ds.EnergyUtilityPlatform.model.dto.IDto;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
@@ -11,11 +12,12 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
+@Component
 @AllArgsConstructor
 @NoArgsConstructor
 public class Device implements IEntity<Device>{
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -42,12 +44,20 @@ public class Device implements IEntity<Device>{
     @Override
     public Device toEntity(IDto<Device> dto) {
         DeviceDto deviceDto = (DeviceDto) dto;
+        AppUser user = AppUser.builder()
+                .username(deviceDto.getUsername())
+                .build();
+        Sensor sensor = Sensor.builder()
+                .id(deviceDto.getSensorId())
+                .build();
         return Device.builder()
                 .id(deviceDto.getId())
                 .description(deviceDto.getDescription())
                 .address(deviceDto.getAddress())
                 .maxEnergyConsumption(deviceDto.getMaxEnergyConsumption())
                 .avgEnergyConsumption(deviceDto.getAvgEnergyConsumption())
+                .user(user)
+                .sensor(sensor)
                 .build();
     }
 }

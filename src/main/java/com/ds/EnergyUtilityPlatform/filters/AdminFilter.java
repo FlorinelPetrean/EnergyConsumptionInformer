@@ -1,6 +1,7 @@
 package com.ds.EnergyUtilityPlatform.filters;
 
-import com.ds.EnergyUtilityPlatform.model.dto.UserDetails;
+import com.ds.EnergyUtilityPlatform.model.entity.AppUser;
+import com.ds.EnergyUtilityPlatform.service.UserService;
 import com.ds.EnergyUtilityPlatform.utils.JwtUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
@@ -15,32 +16,27 @@ import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
-@Order(2)
-public class AuthFilter extends OncePerRequestFilter {
+@Order(3)
+public class AdminFilter extends OncePerRequestFilter {
     private final JwtUtility jwtUtility;
+    private final UserService userService;
+    private AppUser user;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
-        String username = null;
-        String jwtToken = null;
-        if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            jwtToken = authorizationHeader.substring(7);
-            username = jwtUtility.getUsernameFromToken(jwtToken);
-        }
+        String jwtToken = authorizationHeader.substring(7);
+        String username = jwtUtility.getUsernameFromToken(jwtToken);
 
-        if(jwtToken == null) {
-            response.setStatus(401);
-            response.getOutputStream().write("JWT token is missing!".getBytes());
-            return;
-        }
 
         if(username != null) {
-            UserDetails userDetails = new UserDetails(username, "");
-            if(!jwtUtility.validateToken(jwtToken, userDetails)) {
-                response.setStatus(401);
-                response.getOutputStream().write("JWT token is invalid!".getBytes());
-                return;
+            user = userService.findByUsername(username);
+            if (!user.getRole().equals("ADMIN")) {
+                if(!request.getMethod().equals("GET")) {
+                    response.setStatus(401);
+                    response.getOutputStream().write("User is not admin! Operation is not permitted".getBytes());
+                    return;
+                }
             }
         }
 
@@ -51,6 +47,7 @@ public class AuthFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
+        //String userId = String.valueOf(user.getId());
         if (path.equals("/api/user/create"))
             return true;
         if (path.equals("/api/user/login"))

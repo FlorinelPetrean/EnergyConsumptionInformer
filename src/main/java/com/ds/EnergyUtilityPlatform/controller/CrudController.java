@@ -4,6 +4,7 @@ package com.ds.EnergyUtilityPlatform.controller;
 import com.ds.EnergyUtilityPlatform.model.dto.DtoMapper;
 import com.ds.EnergyUtilityPlatform.model.dto.IDto;
 import com.ds.EnergyUtilityPlatform.service.ICrudService;
+import com.ds.EnergyUtilityPlatform.utils.Constants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = Constants.frontend)
 @RequiredArgsConstructor
 public abstract class CrudController<T, U> {
     protected final ICrudService<T> service;
