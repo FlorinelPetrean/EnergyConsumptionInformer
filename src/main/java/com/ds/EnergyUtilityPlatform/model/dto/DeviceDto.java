@@ -24,10 +24,17 @@ public class DeviceDto implements IDto<Device>{
 
     private String username;
 
+    private Long sensorId;
+
     public DeviceDto toDto(Device device) {
         String username = null;
         if (device.getUser() != null)
             username = device.getUser().getUsername();
+
+        Long sensorId = null;
+        if(device.getSensor() != null)
+            sensorId = device.getSensor().getId();
+
         return DeviceDto.builder()
                 .id(device.getId())
                 .description(device.getDescription())
@@ -35,6 +42,7 @@ public class DeviceDto implements IDto<Device>{
                 .maxEnergyConsumption(device.getMaxEnergyConsumption())
                 .avgEnergyConsumption(device.getAvgEnergyConsumption())
                 .username(username)
+                .sensorId(sensorId)
                 .build();
     }
 }

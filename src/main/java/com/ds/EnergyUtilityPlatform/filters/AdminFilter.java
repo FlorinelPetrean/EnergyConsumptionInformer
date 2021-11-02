@@ -31,7 +31,7 @@ public class AdminFilter extends OncePerRequestFilter {
 
         if(username != null) {
             user = userService.findByUsername(username);
-            if (!user.isAdmin()) {
+            if (!user.getRole().equals("ADMIN")) {
                 if(!request.getMethod().equals("GET")) {
                     response.setStatus(401);
                     response.getOutputStream().write("User is not admin! Operation is not permitted".getBytes());

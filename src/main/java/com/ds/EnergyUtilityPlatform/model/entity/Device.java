@@ -47,6 +47,9 @@ public class Device implements IEntity<Device>{
         AppUser user = AppUser.builder()
                 .username(deviceDto.getUsername())
                 .build();
+        Sensor sensor = Sensor.builder()
+                .id(deviceDto.getSensorId())
+                .build();
         return Device.builder()
                 .id(deviceDto.getId())
                 .description(deviceDto.getDescription())
@@ -54,6 +57,7 @@ public class Device implements IEntity<Device>{
                 .maxEnergyConsumption(deviceDto.getMaxEnergyConsumption())
                 .avgEnergyConsumption(deviceDto.getAvgEnergyConsumption())
                 .user(user)
+                .sensor(sensor)
                 .build();
     }
 }

@@ -24,7 +24,7 @@ public class AppUser implements IEntity<AppUser>{
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(unique = true)
     private String username;
 
     @Column
@@ -43,7 +43,7 @@ public class AppUser implements IEntity<AppUser>{
     private Date dateOfBirth;
 
     @Column
-    private boolean isAdmin;
+    private String role;
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -62,7 +62,7 @@ public class AppUser implements IEntity<AppUser>{
                 .lastName(userDto.getLastName())
                 .address(userDto.getAddress())
                 .dateOfBirth(Date.valueOf(dateOfBirth))
-                .isAdmin(userDto.isAdmin())
+                .role(userDto.getRole())
                 .devices(new ArrayList<>(50))
                 .build();
     }

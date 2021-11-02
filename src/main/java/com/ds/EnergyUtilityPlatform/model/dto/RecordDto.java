@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Component
 @Data
@@ -16,16 +17,27 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RecordDto implements IDto<Record> {
-    private LocalDateTime timestamp;
+
+    private Long id;
+
+    private String timestamp;
 
     private Long energyConsumption;
 
+    private Long sensorId;
+
 
     @Override
-    public IDto<Record> toDto(Record entity) {
+    public IDto<Record> toDto(Record record) {
+        Long sensorId = null;
+        if (record.getSensor() != null)
+            sensorId = record.getSensor().getId();
+        DateTimeFormatter format = DateTimeFormatter.ISO_DATE_TIME;
         return builder()
-                .energyConsumption(entity.getEnergyConsumption())
-                .timestamp(entity.getTimestamp())
+                .id(record.getId())
+                .energyConsumption(record.getEnergyConsumption())
+                .timestamp(record.getTimestamp().format(format))
+                .sensorId(sensorId)
                 .build();
     }
 }

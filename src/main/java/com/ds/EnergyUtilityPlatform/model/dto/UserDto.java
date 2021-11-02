@@ -7,9 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.util.Date;
-
 @Builder
 @Data
 @Component
@@ -30,7 +27,7 @@ public class UserDto implements IDto<AppUser>{
 
     private String dateOfBirth;
 
-    private boolean isAdmin;
+    private String role;
 
     public UserDto toDto(AppUser user) {
         String dateOfBirth = user.getDateOfBirth().toString();
@@ -42,7 +39,7 @@ public class UserDto implements IDto<AppUser>{
                 .lastName(user.getLastName())
                 .address(user.getAddress())
                 .dateOfBirth(dateOfBirth)
-                .isAdmin(user.isAdmin())
+                .role(user.getRole())
                 .build();
     }
 }

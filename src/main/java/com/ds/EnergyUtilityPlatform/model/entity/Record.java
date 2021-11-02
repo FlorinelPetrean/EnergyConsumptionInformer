@@ -36,9 +36,12 @@ public class Record implements IEntity<Record>{
     @Override
     public Record toEntity(IDto<Record> dto) {
         RecordDto recordDto = (RecordDto) dto;
+        Sensor sensor = Sensor.builder()
+                .id(recordDto.getSensorId())
+                .build();
         return Record.builder()
                 .energyConsumption(recordDto.getEnergyConsumption())
-                .timestamp(recordDto.getTimestamp())
+                .sensor(sensor)
                 .build();
     }
 }

@@ -26,6 +26,7 @@ public class SensorDto implements IDto<Sensor>{
         Long deviceId = null;
         if (sensor.getDevice() != null)
             deviceId = sensor.getDevice().getId();
+
         return SensorDto.builder()
                 .id(sensor.getId())
                 .description(sensor.getDescription())
