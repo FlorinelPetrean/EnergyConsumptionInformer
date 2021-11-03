@@ -47,8 +47,15 @@ public abstract class CrudController<T, U> {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         service.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping(path = "/delete")
+    public ResponseEntity<Void> delete(@RequestBody U bean) {
+        T entity = dtoMapper.getEntity((IDto<T>) bean);
+        service.delete(entity);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

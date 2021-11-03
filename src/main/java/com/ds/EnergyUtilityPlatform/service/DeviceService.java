@@ -55,6 +55,15 @@ public class DeviceService extends CrudService<Device> {
         return super.modify(bean);
     }
 
+    @Override
+    public void deleteById(Long id) {
+        Device device = findById(id);
+        Sensor sensor = device.getSensor();
+        if (sensor != null)
+            sensorService.deleteById(sensor.getId());
+        super.deleteById(id);
+    }
+
     public Device save(Device device) {
         return deviceRepository.save(device);
     }

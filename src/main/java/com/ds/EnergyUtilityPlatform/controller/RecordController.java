@@ -23,9 +23,9 @@ public class RecordController extends CrudController<Record, RecordDto> {
         this.recordService = (RecordService) service;
     }
 
-    @GetMapping(path = "/list/{sensorId}")
-    public List<IDto<Record>> getSensorRecords(@PathVariable Long sensorId) {
-        List<Record> all = recordService.getSensorRecords(sensorId);
+    @GetMapping(path = "/list/{sensorId}/{date}")
+    public List<IDto<Record>> getSensorRecords(@PathVariable Long sensorId, @PathVariable String date) {
+        List<Record> all = recordService.getSensorRecordsByDay(sensorId, date);
         return all.stream().map(dtoMapper::getDto).collect(Collectors.toList());
     }
 }

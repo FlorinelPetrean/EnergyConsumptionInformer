@@ -35,17 +35,23 @@ public class UserController extends CrudController<AppUser, UserDto> {
         return all.stream().map(device -> (DeviceDto) dtoMapper.getDto(device)).collect(Collectors.toList());
     }
 
+    @GetMapping(path = "/{username}/totalEnergy")
+    public Float getUserTotalEnergy(@PathVariable String username) {
+        return userService.getEnergyConsumption(username);
+    }
+
     @PostMapping("/login")
     public JwtResponse login(@RequestBody UserDetails userDetails) throws Exception {
+        AppUser user;
         try {
-            this.userService.login(userDetails.getUsername(), userDetails.getPassword());
+            user = this.userService.login(userDetails.getUsername(), userDetails.getPassword());
         }
         catch (Exception e) {
             throw new Exception("Invalid Credentials", e);
         }
 
         String token = jwtUtility.generateToken(userDetails);
-        return new JwtResponse(token);
+        return new JwtResponse(token, user.getRole());
     }
 
 
