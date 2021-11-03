@@ -21,7 +21,8 @@ import java.util.List;
 @AllArgsConstructor
 public class AppUser implements IEntity<AppUser>{
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name ="id", columnDefinition = "serial")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Long id;
 
     @Column(unique = true)

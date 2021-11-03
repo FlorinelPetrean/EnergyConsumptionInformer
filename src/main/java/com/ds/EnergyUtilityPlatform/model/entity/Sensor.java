@@ -19,7 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Sensor implements IEntity<Sensor>{
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name ="id", columnDefinition = "serial")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Long id;
 
     @Column
