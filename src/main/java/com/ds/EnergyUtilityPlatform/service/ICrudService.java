@@ -13,4 +13,6 @@ public interface ICrudService<T> {
     T modify(T bean);
 
     void deleteById(Long id);
+
+    void delete(T bean);
 }

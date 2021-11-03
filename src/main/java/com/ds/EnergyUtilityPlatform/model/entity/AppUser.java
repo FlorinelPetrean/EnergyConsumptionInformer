@@ -47,7 +47,7 @@ public class AppUser implements IEntity<AppUser>{
     private String role;
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Device> devices;
 
 

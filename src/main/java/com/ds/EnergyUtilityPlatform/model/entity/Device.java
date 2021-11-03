@@ -4,9 +4,12 @@ package com.ds.EnergyUtilityPlatform.model.entity;
 import com.ds.EnergyUtilityPlatform.model.dto.DeviceDto;
 import com.ds.EnergyUtilityPlatform.model.dto.IDto;
 import lombok.*;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Entity
 @Getter
@@ -33,13 +36,15 @@ public class Device implements IEntity<Device>{
     @Column
     private Float avgEnergyConsumption;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "sensor_id", referencedColumnName = "id")
     private Sensor sensor;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private AppUser user;
+
+
 
 
     @Override

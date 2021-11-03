@@ -33,7 +33,7 @@ public class Sensor implements IEntity<Sensor>{
     @JoinColumn(name = "device_id", referencedColumnName = "id")
     private Device device;
 
-    @OneToMany(mappedBy = "sensor", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "sensor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Record> records;
 
     @Override

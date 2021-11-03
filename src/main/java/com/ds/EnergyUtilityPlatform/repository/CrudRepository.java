@@ -11,4 +11,6 @@ public interface CrudRepository<T> {
     T save(T bean);
 
     void deleteById(Long id);
+
+    void delete(T bean);
 }

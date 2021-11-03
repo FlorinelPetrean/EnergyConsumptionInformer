@@ -54,10 +54,11 @@ public class SensorService extends CrudService<Sensor> {
     }
 
 
-    @Override
-    public void deleteById(Long id) {
-        super.deleteById(id);
-    }
+//    @Override
+//    public void deleteById(Long id) {
+//        Sensor sensor = findById(id)
+//        super.deleteById(id);
+//    }
 
     public List<String> getTemplateSensors() {
         List<Sensor> all = sensorRepository.getSensorsByDeviceIsNull();

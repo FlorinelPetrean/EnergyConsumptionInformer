@@ -37,5 +37,9 @@ public abstract class CrudService<T> implements ICrudService<T>{
         crudRepository.deleteById(id);
     }
 
+    public void delete(T bean) {
+        crudRepository.delete(bean);
+    }
+
 
 }
