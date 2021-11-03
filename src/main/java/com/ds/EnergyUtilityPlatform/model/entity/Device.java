@@ -17,7 +17,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Device implements IEntity<Device>{
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name ="id", columnDefinition = "serial")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     private Long id;
 
     @Column
