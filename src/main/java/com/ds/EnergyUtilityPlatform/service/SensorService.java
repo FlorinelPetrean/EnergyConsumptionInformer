@@ -53,6 +53,12 @@ public class SensorService extends CrudService<Sensor> {
         return create(bean);
     }
 
+
+    @Override
+    public void deleteById(Long id) {
+        super.deleteById(id);
+    }
+
     public List<String> getTemplateSensors() {
         List<Sensor> all = sensorRepository.getSensorsByDeviceIsNull();
         return all.stream().map(Sensor::getDescription).collect(Collectors.toList());
