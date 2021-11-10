@@ -19,8 +19,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Record implements IEntity<Record>{
     @Id
-    @Column(name ="id", columnDefinition = "serial")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @Column
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     @Column

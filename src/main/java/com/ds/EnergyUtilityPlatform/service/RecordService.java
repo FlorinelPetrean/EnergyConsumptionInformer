@@ -1,15 +1,18 @@
 package com.ds.EnergyUtilityPlatform.service;
 
+import com.ds.EnergyUtilityPlatform.model.dto.RecordChart;
 import com.ds.EnergyUtilityPlatform.model.entity.Device;
 import com.ds.EnergyUtilityPlatform.model.entity.Record;
 import com.ds.EnergyUtilityPlatform.model.entity.Sensor;
 import com.ds.EnergyUtilityPlatform.repository.CrudRepository;
 import com.ds.EnergyUtilityPlatform.repository.RecordRepository;
+import com.ds.EnergyUtilityPlatform.utils.BeanUtil;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,8 +22,8 @@ public class RecordService extends CrudService<Record> implements ICrudService<R
     private final RecordRepository recordRepository;
     private final SensorService sensorService;
     private final DeviceService deviceService;
-    public RecordService(CrudRepository<Record> crudRepository, SensorService sensorService, DeviceService deviceService) {
-        super(crudRepository);
+    public RecordService(CrudRepository<Record> crudRepository, BeanUtil<Record> beanUtil, SensorService sensorService, DeviceService deviceService) {
+        super(crudRepository, beanUtil);
         this.recordRepository = (RecordRepository) crudRepository;
         this.sensorService = sensorService;
         this.deviceService = deviceService;
@@ -59,7 +62,8 @@ public class RecordService extends CrudService<Record> implements ICrudService<R
         for(Record r : records) {
             sum += r.getEnergyConsumption();
         }
-        avg = (float) (sum / records.size());
+        if (records.size() != 0)
+            avg = (float) (sum / records.size());
         device.setAvgEnergyConsumption(avg);
 
         deviceService.save(device);
@@ -68,8 +72,12 @@ public class RecordService extends CrudService<Record> implements ICrudService<R
 
 
 
-    public List<Record> getSensorRecordsByDay(Long sensorId, String day) {
+    public List<RecordChart> getSensorRecordsByDay(Long sensorId, String day) {
+        List<RecordChart> data = new ArrayList<>(100);
         List<Record> all = recordRepository.getRecordsBySensorId(sensorId);
-        return all.stream().filter(record -> record.getTimestamp().toString().contains(day)).collect(Collectors.toList());
+        return all.stream()
+                .filter(record -> record.getTimestamp().toString().contains(day))
+                .map(record -> new RecordChart(record.getTimestamp().toLocalTime().toString(), record.getEnergyConsumption()))
+                .collect(Collectors.toList());
     }
 }

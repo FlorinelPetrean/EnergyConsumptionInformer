@@ -5,6 +5,7 @@ import com.ds.EnergyUtilityPlatform.model.entity.Record;
 import com.ds.EnergyUtilityPlatform.model.entity.Sensor;
 import com.ds.EnergyUtilityPlatform.repository.CrudRepository;
 import com.ds.EnergyUtilityPlatform.repository.SensorRepository;
+import com.ds.EnergyUtilityPlatform.utils.BeanUtil;
 import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ import java.util.stream.Collectors;
 public class SensorService extends CrudService<Sensor> {
     private final SensorRepository sensorRepository;
     private final DeviceService deviceService;
-    public SensorService(CrudRepository<Sensor> crudRepository, DeviceService deviceService) {
-        super(crudRepository);
+    public SensorService(CrudRepository<Sensor> crudRepository, BeanUtil<Sensor> beanUtil, DeviceService deviceService) {
+        super(crudRepository, beanUtil);
         this.sensorRepository = (SensorRepository) crudRepository;
         this.deviceService = deviceService;
     }
@@ -49,12 +50,13 @@ public class SensorService extends CrudService<Sensor> {
     }
 
     @Override
-    public Sensor modify(Sensor bean) {
-        return create(bean);
+    public Sensor modify(Long id, Sensor bean) {
+        bean.setRecords(null);
+        bean.setDevice(null);
+        return super.modify(id, bean);
     }
 
-
-//    @Override
+    //    @Override
 //    public void deleteById(Long id) {
 //        Sensor sensor = findById(id)
 //        super.deleteById(id);

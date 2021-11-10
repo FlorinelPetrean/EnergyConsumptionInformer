@@ -5,6 +5,7 @@ import com.ds.EnergyUtilityPlatform.model.entity.AppUser;
 import com.ds.EnergyUtilityPlatform.model.entity.Device;
 import com.ds.EnergyUtilityPlatform.repository.CrudRepository;
 import com.ds.EnergyUtilityPlatform.repository.UserRepository;
+import com.ds.EnergyUtilityPlatform.utils.BeanUtil;
 import com.ds.EnergyUtilityPlatform.utils.PasswordEncoder;
 import org.hibernate.Hibernate;
 import org.springframework.context.annotation.Lazy;
@@ -19,8 +20,8 @@ import java.util.Optional;
 public class UserService extends CrudService<AppUser> {
     private final UserRepository userRepository;
     private final DeviceService deviceService;
-    public UserService(CrudRepository<AppUser> crudRepository, @Lazy DeviceService deviceService) {
-        super(crudRepository);
+    public UserService(CrudRepository<AppUser> crudRepository, BeanUtil<AppUser> beanUtil, @Lazy DeviceService deviceService) {
+        super(crudRepository, beanUtil);
         this.userRepository = (UserRepository) crudRepository;
         this.deviceService = deviceService;
     }
@@ -61,10 +62,9 @@ public class UserService extends CrudService<AppUser> {
     }
 
     @Override
-    public AppUser modify(AppUser bean) {
-        AppUser user = findByUsername(bean.getUsername());
-        bean.setPassword(user.getPassword());
-        return super.modify(bean);
+    public AppUser modify(Long id, AppUser bean) {
+        bean.setDevices(null);
+        return super.modify(id, bean);
     }
 
     @Override

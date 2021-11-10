@@ -2,6 +2,7 @@ package com.ds.EnergyUtilityPlatform.controller;
 
 import com.ds.EnergyUtilityPlatform.model.dto.DtoMapper;
 import com.ds.EnergyUtilityPlatform.model.dto.IDto;
+import com.ds.EnergyUtilityPlatform.model.dto.RecordChart;
 import com.ds.EnergyUtilityPlatform.model.dto.RecordDto;
 import com.ds.EnergyUtilityPlatform.model.entity.Record;
 import com.ds.EnergyUtilityPlatform.service.ICrudService;
@@ -24,8 +25,7 @@ public class RecordController extends CrudController<Record, RecordDto> {
     }
 
     @GetMapping(path = "/list/{sensorId}/{date}")
-    public List<IDto<Record>> getSensorRecords(@PathVariable Long sensorId, @PathVariable String date) {
-        List<Record> all = recordService.getSensorRecordsByDay(sensorId, date);
-        return all.stream().map(dtoMapper::getDto).collect(Collectors.toList());
+    public List<RecordChart> getSensorRecords(@PathVariable Long sensorId, @PathVariable String date) {
+        return recordService.getSensorRecordsByDay(sensorId, date);
     }
 }
