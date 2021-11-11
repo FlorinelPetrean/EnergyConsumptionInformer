@@ -5,9 +5,11 @@ import com.ds.EnergyUtilityPlatform.model.entity.Device;
 import com.ds.EnergyUtilityPlatform.model.entity.Sensor;
 import com.ds.EnergyUtilityPlatform.repository.CrudRepository;
 import com.ds.EnergyUtilityPlatform.repository.DeviceRepository;
+import com.ds.EnergyUtilityPlatform.utils.BeanUtil;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,8 +18,8 @@ public class DeviceService extends CrudService<Device> {
     private final DeviceRepository deviceRepository;
     private final UserService userService;
     private final SensorService sensorService;
-    public DeviceService(CrudRepository<Device> crudRepository, UserService userService, @Lazy SensorService sensorService) {
-        super(crudRepository);
+    public DeviceService(CrudRepository<Device> crudRepository, BeanUtil<Device> beanUtil, UserService userService, @Lazy SensorService sensorService) {
+        super(crudRepository, beanUtil);
         this.deviceRepository = (DeviceRepository) crudRepository;
         this.userService = userService;
         this.sensorService = sensorService;
@@ -38,21 +40,12 @@ public class DeviceService extends CrudService<Device> {
         return super.create(bean);
     }
 
+
     @Override
-    public Device modify(Device bean) {
-        String username = bean.getUser().getUsername();
-        Long sensorId = bean.getSensor().getId();
-        bean.setUser(null);
+    public Device modify(Long id, Device bean) {
         bean.setSensor(null);
-        if (username != null && !username.equals("")) {
-            AppUser user = userService.findByUsername(username);
-            bean.setUser(user);
-        }
-        if(sensorId != null) {
-            Sensor sensor = sensorService.findById(sensorId);
-            bean.setSensor(sensor);
-        }
-        return super.modify(bean);
+        bean.setUser(null);
+        return super.modify(id, bean);
     }
 
     @Override

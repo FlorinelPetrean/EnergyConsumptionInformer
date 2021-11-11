@@ -39,10 +39,10 @@ public abstract class CrudController<T, U> {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping(path = "/modify")
-    public ResponseEntity<Void> modify(@RequestBody U bean) {
+    @PutMapping(path = "/modify/{id}")
+    public ResponseEntity<Void> modify(@PathVariable Long id, @RequestBody U bean) {
         T entity = dtoMapper.getEntity((IDto<T>) bean);
-        service.modify(entity);
+        service.modify(id, entity);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

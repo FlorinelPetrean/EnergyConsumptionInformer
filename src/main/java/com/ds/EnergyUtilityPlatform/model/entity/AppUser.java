@@ -20,9 +20,13 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppUser implements IEntity<AppUser>{
+//    @Id
+//    @Column(name ="id", columnDefinition = "serial")
+//    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+//    private Long id;
     @Id
-    @Column(name ="id", columnDefinition = "serial")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @Column
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     @Column(unique = true)

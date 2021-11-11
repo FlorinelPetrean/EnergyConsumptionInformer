@@ -10,7 +10,7 @@ public interface ICrudService<T> {
 
     T create(T bean);
 
-    T modify(T bean);
+    T modify(Long id, T bean);
 
     void deleteById(Long id);
 

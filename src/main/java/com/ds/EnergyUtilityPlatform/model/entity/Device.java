@@ -20,8 +20,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Device implements IEntity<Device>{
     @Id
-    @Column(name ="id", columnDefinition = "serial")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @Column
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
     @Column
@@ -40,7 +40,7 @@ public class Device implements IEntity<Device>{
     @JoinColumn(name = "sensor_id", referencedColumnName = "id")
     private Sensor sensor;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id")
     private AppUser user;
 
