@@ -18,9 +18,9 @@ public class DeviceDto implements IDto<Device>{
 
     private String address;
 
-    private Long maxEnergyConsumption;
+    private Double maxEnergyConsumption;
 
-    private Float avgEnergyConsumption;
+    private Double avgEnergyConsumption;
 
     private String username;
 

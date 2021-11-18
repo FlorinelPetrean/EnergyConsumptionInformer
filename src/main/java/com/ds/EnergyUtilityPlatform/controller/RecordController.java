@@ -7,6 +7,8 @@ import com.ds.EnergyUtilityPlatform.model.dto.RecordDto;
 import com.ds.EnergyUtilityPlatform.model.entity.Record;
 import com.ds.EnergyUtilityPlatform.service.ICrudService;
 import com.ds.EnergyUtilityPlatform.service.RecordService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +29,10 @@ public class RecordController extends CrudController<Record, RecordDto> {
     @GetMapping(path = "/list/{sensorId}/{date}")
     public List<RecordChart> getSensorRecords(@PathVariable Long sensorId, @PathVariable String date) {
         return recordService.getSensorRecordsByDay(sensorId, date);
+    }
+
+    @Override
+    public ResponseEntity<Void> create(RecordDto bean) {
+        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
 }

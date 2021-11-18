@@ -47,7 +47,7 @@ public class RecordService extends CrudService<Record> implements ICrudService<R
     public void updateEnergyValues(Record record) {
         Sensor sensor = record.getSensor();
         Device device = sensor.getDevice();
-        Long energy = record.getEnergyConsumption();
+        Double energy = record.getEnergyConsumption();
         if (sensor.getMaxValue() < energy) {
             sensor.setMaxValue(energy);
         }
@@ -57,13 +57,13 @@ public class RecordService extends CrudService<Record> implements ICrudService<R
 
         Hibernate.initialize(sensor.getRecords());
         List<Record> records = sensor.getRecords();
-        Float avg = 0.0f;
-        Long sum = 0L;
+        double avg = 0.0;
+        Double sum = 0.0;
         for(Record r : records) {
             sum += r.getEnergyConsumption();
         }
         if (records.size() != 0)
-            avg = (float) (sum / records.size());
+            avg = sum / records.size();
         device.setAvgEnergyConsumption(avg);
 
         deviceService.save(device);
@@ -73,7 +73,6 @@ public class RecordService extends CrudService<Record> implements ICrudService<R
 
 
     public List<RecordChart> getSensorRecordsByDay(Long sensorId, String day) {
-        List<RecordChart> data = new ArrayList<>(100);
         List<Record> all = recordRepository.getRecordsBySensorId(sensorId);
         return all.stream()
                 .filter(record -> record.getTimestamp().toString().contains(day))

@@ -22,7 +22,7 @@ public class RecordDto implements IDto<Record> {
 
     private String timestamp;
 
-    private Long energyConsumption;
+    private Double energyConsumption;
 
     private Long sensorId;
 

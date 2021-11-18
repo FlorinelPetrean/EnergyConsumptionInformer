@@ -31,10 +31,10 @@ public class Device implements IEntity<Device>{
     private String address;
 
     @Column
-    private Long maxEnergyConsumption;
+    private Double maxEnergyConsumption;
 
     @Column
-    private Float avgEnergyConsumption;
+    private Double avgEnergyConsumption;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "sensor_id", referencedColumnName = "id")

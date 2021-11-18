@@ -8,5 +8,5 @@ import lombok.Data;
 @Data
 public class RecordChart {
     private String timestamp;
-    private Long energyConsumption;
+    private Double energyConsumption;
 }

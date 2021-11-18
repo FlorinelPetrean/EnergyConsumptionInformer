@@ -27,7 +27,7 @@ public class Record implements IEntity<Record>{
     private LocalDateTime timestamp;
 
     @Column
-    private Long energyConsumption;
+    private Double energyConsumption;
 
     @ManyToOne
     @JoinColumn(name = "sensor_id")

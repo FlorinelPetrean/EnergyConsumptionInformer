@@ -34,8 +34,8 @@ public class DeviceService extends CrudService<Device> {
             AppUser user = userService.findByUsername(username);
             bean.setUser(user);
             bean.setAddress(user.getAddress());
-            bean.setAvgEnergyConsumption(0.0f);
-            bean.setMaxEnergyConsumption(0L);
+            bean.setAvgEnergyConsumption(0.0);
+            bean.setMaxEnergyConsumption(0.0);
         }
         return super.create(bean);
     }

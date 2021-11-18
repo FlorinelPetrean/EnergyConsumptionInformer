@@ -43,9 +43,9 @@ public class UserService extends CrudService<AppUser> {
     }
 
     @Transactional
-    public Float getEnergyConsumption(String username) {
+    public Double getEnergyConsumption(String username) {
         List<Device> devices = getUserDevices(username);
-        Float sum = 0.0f;
+        Double sum = 0.0;
         for(Device device : devices) {
             sum += device.getAvgEnergyConsumption();
         }

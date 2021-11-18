@@ -1,19 +1,27 @@
 package com.ds.EnergyUtilityPlatform.service.rabbitmq;
 
-import org.springframework.stereotype.Component;
+import com.ds.EnergyUtilityPlatform.model.dto.DtoMapper;
+import com.ds.EnergyUtilityPlatform.model.dto.RecordDto;
+import com.ds.EnergyUtilityPlatform.model.entity.Record;
+import com.ds.EnergyUtilityPlatform.service.RecordService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.stereotype.Service;
 
-import java.util.concurrent.CountDownLatch;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class RabbitMQReceiver {
-    private final CountDownLatch latch = new CountDownLatch(1);
+    private final DtoMapper dtoMapper;
+    private final RecordService recordService;
 
-    public void receiveMessage(String message) {
-        System.out.println("Received <" + message + ">");
-        latch.countDown();
+    @RabbitListener(queues = RabbitMQConfig.QUEUE)
+    public void receiveData(RecordDto recordDto) {
+        System.out.println("Message received: <" + recordDto.toString() + ">");
+        Record record = dtoMapper.getEntity(recordDto);
+        recordService.create(record);
     }
 
-    public CountDownLatch getLatch() {
-        return latch;
-    }
 }
+
+

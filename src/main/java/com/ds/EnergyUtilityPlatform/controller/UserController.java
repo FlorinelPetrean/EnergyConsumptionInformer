@@ -36,7 +36,7 @@ public class UserController extends CrudController<AppUser, UserDto> {
     }
 
     @GetMapping(path = "/{username}/totalEnergy")
-    public Float getUserTotalEnergy(@PathVariable String username) {
+    public Double getUserTotalEnergy(@PathVariable String username) {
         return userService.getEnergyConsumption(username);
     }
 

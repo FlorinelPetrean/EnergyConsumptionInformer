@@ -27,7 +27,7 @@ public class Sensor implements IEntity<Sensor>{
     private String description;
 
     @Column
-    private Long maxValue;
+    private Double maxValue;
 
     @OneToOne(cascade = CascadeType.MERGE) //do not change this
     @JoinColumn(name = "device_id", referencedColumnName = "id")

@@ -18,7 +18,7 @@ public class SensorDto implements IDto<Sensor>{
 
     private String description;
 
-    private Long maxValue;
+    private Double maxValue;
 
     private Long deviceId;
 
