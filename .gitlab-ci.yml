@@ -19,7 +19,7 @@ checkstyle:
     stage: checkstyle
     image: maven:3.8.3-eclipse-temurin-11
     script:
-    - echo "Checkstyle DEMO app"
+    - echo "Checkstyle EUP app"
     - mvn checkstyle:check
 
 build:
@@ -35,7 +35,7 @@ build:
     - docker push $CI_REGISTRY_IMAGE:latest
 
 variables:
-    APP_NAME: spring-demo-ds2020
+    APP_NAME: ds2021energyutlityplatform
     
 deploy:
   image: docker:latest
