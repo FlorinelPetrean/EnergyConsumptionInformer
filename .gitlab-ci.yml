@@ -7,7 +7,7 @@ stages:
 
 test:
     stage: test
-    image: maven:3.3.9-jdk-8
+    image: maven:3.8.3-eclipse-temurin-11
     script:
     - echo "Test DEMO app"
     - mvn test && mvn jacoco:report
@@ -17,7 +17,7 @@ test:
 
 checkstyle:
     stage: checkstyle
-    image: maven:3.3.9-jdk-8
+    image: maven:3.8.3-eclipse-temurin-11
     script:
     - echo "Checkstyle DEMO app"
     - mvn checkstyle:check
