@@ -18,7 +18,7 @@ public class DeviceService extends CrudService<Device> {
     private final DeviceRepository deviceRepository;
     private final UserService userService;
     private final SensorService sensorService;
-    public DeviceService(CrudRepository<Device> crudRepository, BeanUtil<Device> beanUtil, UserService userService, @Lazy SensorService sensorService) {
+    public DeviceService(CrudRepository<Device> crudRepository, BeanUtil<Device> beanUtil, UserService userService, SensorService sensorService) {
         super(crudRepository, beanUtil);
         this.deviceRepository = (DeviceRepository) crudRepository;
         this.userService = userService;

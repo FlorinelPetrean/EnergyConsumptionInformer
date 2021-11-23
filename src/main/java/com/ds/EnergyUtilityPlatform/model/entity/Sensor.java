@@ -1,8 +1,8 @@
 package com.ds.EnergyUtilityPlatform.model.entity;
 
 
-import com.ds.EnergyUtilityPlatform.model.dto.IDto;
-import com.ds.EnergyUtilityPlatform.model.dto.SensorDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.IDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.SensorDto;
 import lombok.*;
 import org.springframework.stereotype.Component;
 

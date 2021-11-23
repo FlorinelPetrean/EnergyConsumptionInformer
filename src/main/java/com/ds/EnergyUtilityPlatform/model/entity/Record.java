@@ -1,13 +1,17 @@
 package com.ds.EnergyUtilityPlatform.model.entity;
 
 
-import com.ds.EnergyUtilityPlatform.model.dto.IDto;
-import com.ds.EnergyUtilityPlatform.model.dto.RecordDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.IDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.RecordDto;
 import lombok.*;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 
 @Entity
@@ -24,7 +28,7 @@ public class Record implements IEntity<Record>{
     private Long id;
 
     @Column
-    private LocalDateTime timestamp;
+    private Long timestamp;
 
     @Column
     private Double energyConsumption;
@@ -40,9 +44,13 @@ public class Record implements IEntity<Record>{
         Sensor sensor = Sensor.builder()
                 .id(recordDto.getSensorId())
                 .build();
+        ZonedDateTime zdt = ZonedDateTime.now();
         return Record.builder()
                 .energyConsumption(recordDto.getEnergyConsumption())
+                .timestamp(recordDto.getTimestamp())
                 .sensor(sensor)
                 .build();
     }
+
+
 }

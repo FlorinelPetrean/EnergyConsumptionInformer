@@ -1,4 +1,4 @@
-package com.ds.EnergyUtilityPlatform.model.dto;
+package com.ds.EnergyUtilityPlatform.model.dto.entitydto;
 
 
 import com.ds.EnergyUtilityPlatform.model.entity.Sensor;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
-public class SensorDto implements IDto<Sensor>{
+public class SensorDto implements IDto<Sensor> {
     private Long id;
 
     private String description;

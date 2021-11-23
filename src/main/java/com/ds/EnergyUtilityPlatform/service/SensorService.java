@@ -7,9 +7,15 @@ import com.ds.EnergyUtilityPlatform.repository.CrudRepository;
 import com.ds.EnergyUtilityPlatform.repository.SensorRepository;
 import com.ds.EnergyUtilityPlatform.utils.BeanUtil;
 import org.hibernate.Hibernate;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.repository.cdi.Eager;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
+import java.time.temporal.TemporalField;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,7 +23,7 @@ import java.util.stream.Collectors;
 public class SensorService extends CrudService<Sensor> {
     private final SensorRepository sensorRepository;
     private final DeviceService deviceService;
-    public SensorService(CrudRepository<Sensor> crudRepository, BeanUtil<Sensor> beanUtil, DeviceService deviceService) {
+    public SensorService(CrudRepository<Sensor> crudRepository, BeanUtil<Sensor> beanUtil, @Lazy DeviceService deviceService) {
         super(crudRepository, beanUtil);
         this.sensorRepository = (SensorRepository) crudRepository;
         this.deviceService = deviceService;
@@ -66,4 +72,22 @@ public class SensorService extends CrudService<Sensor> {
         List<Sensor> all = sensorRepository.getSensorsByDeviceIsNull();
         return all.stream().map(Sensor::getDescription).collect(Collectors.toList());
     }
+
+
+    public Record getLatestRecord(Sensor sensor) {
+        List<Record> records = sensor.getRecords();
+        Record latestRecord = null;
+        ZonedDateTime zdt = ZonedDateTime.now();
+        long now = LocalDateTime.now().toInstant(ZoneOffset.from(zdt)).toEpochMilli();
+        long min = now;
+        for (Record record: records) {
+            long recordTimestamp = record.getTimestamp();
+            if(min > now - recordTimestamp) {
+                min = now - recordTimestamp;
+                latestRecord = record;
+            }
+        }
+        return latestRecord;
+   }
+
 }

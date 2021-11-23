@@ -1,4 +1,4 @@
-package com.ds.EnergyUtilityPlatform.model.dto;
+package com.ds.EnergyUtilityPlatform.model.dto.entitydto;
 
 
 import com.ds.EnergyUtilityPlatform.model.entity.Record;
@@ -8,7 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
@@ -20,7 +21,8 @@ public class RecordDto implements IDto<Record> {
 
     private Long id;
 
-    private String timestamp;
+    private Long timestamp;
+//    private String timestamp;
 
     private Double energyConsumption;
 
@@ -33,10 +35,11 @@ public class RecordDto implements IDto<Record> {
         if (record.getSensor() != null)
             sensorId = record.getSensor().getId();
         DateTimeFormatter format = DateTimeFormatter.ISO_DATE_TIME;
+        ZonedDateTime zdt = ZonedDateTime.now();
         return builder()
                 .id(record.getId())
                 .energyConsumption(record.getEnergyConsumption())
-                .timestamp(record.getTimestamp().format(format))
+                .timestamp(record.getTimestamp())
                 .sensorId(sensorId)
                 .build();
     }

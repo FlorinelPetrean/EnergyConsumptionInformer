@@ -27,6 +27,11 @@ public abstract class CrudService<T> implements ICrudService<T>{
         throw new IllegalStateException("Cannot find entity with id=" + id);
     }
 
+    public boolean doesExist(Long id) {
+        Optional<T> optionalT = crudRepository.findById(id);
+        return optionalT.isPresent();
+    }
+
     public T create(T bean) {
         return crudRepository.save(bean);
     }

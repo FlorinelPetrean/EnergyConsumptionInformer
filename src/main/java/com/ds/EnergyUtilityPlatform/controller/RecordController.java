@@ -1,9 +1,8 @@
 package com.ds.EnergyUtilityPlatform.controller;
 
 import com.ds.EnergyUtilityPlatform.model.dto.DtoMapper;
-import com.ds.EnergyUtilityPlatform.model.dto.IDto;
 import com.ds.EnergyUtilityPlatform.model.dto.RecordChart;
-import com.ds.EnergyUtilityPlatform.model.dto.RecordDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.RecordDto;
 import com.ds.EnergyUtilityPlatform.model.entity.Record;
 import com.ds.EnergyUtilityPlatform.service.ICrudService;
 import com.ds.EnergyUtilityPlatform.service.RecordService;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/api/record")

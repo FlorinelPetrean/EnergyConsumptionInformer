@@ -1,32 +1,41 @@
 package com.ds.EnergyUtilityPlatform.service;
 
+import com.ds.EnergyUtilityPlatform.config.RabbitMQConfig;
+import com.ds.EnergyUtilityPlatform.model.dto.DtoMapper;
+import com.ds.EnergyUtilityPlatform.model.dto.Notification;
 import com.ds.EnergyUtilityPlatform.model.dto.RecordChart;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.RecordDto;
 import com.ds.EnergyUtilityPlatform.model.entity.Device;
 import com.ds.EnergyUtilityPlatform.model.entity.Record;
 import com.ds.EnergyUtilityPlatform.model.entity.Sensor;
 import com.ds.EnergyUtilityPlatform.repository.CrudRepository;
 import com.ds.EnergyUtilityPlatform.repository.RecordRepository;
+import com.ds.EnergyUtilityPlatform.repository.SensorRepository;
 import com.ds.EnergyUtilityPlatform.utils.BeanUtil;
 import org.hibernate.Hibernate;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.time.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 @Service
-public class RecordService extends CrudService<Record> implements ICrudService<Record>{
+public class RecordService extends CrudService<Record> {
     private final RecordRepository recordRepository;
     private final SensorService sensorService;
     private final DeviceService deviceService;
-    public RecordService(CrudRepository<Record> crudRepository, BeanUtil<Record> beanUtil, SensorService sensorService, DeviceService deviceService) {
+    private final DtoMapper dtoMapper;
+    private final NotificationService notificationService;
+    public RecordService(CrudRepository<Record> crudRepository, BeanUtil<Record> beanUtil, SensorService sensorService, SensorRepository sensorRepository, DeviceService deviceService, DtoMapper dtoMapper, NotificationService notificationService) {
         super(crudRepository, beanUtil);
         this.recordRepository = (RecordRepository) crudRepository;
         this.sensorService = sensorService;
         this.deviceService = deviceService;
+        this.dtoMapper = dtoMapper;
+        this.notificationService = notificationService;
     }
 
     @Override
@@ -36,10 +45,9 @@ public class RecordService extends CrudService<Record> implements ICrudService<R
         if (sensorId != null) {
             Sensor sensor = sensorService.findById(sensorId);
             bean.setSensor(sensor);
-            bean.setTimestamp(LocalDateTime.now());
         }
         super.create(bean);
-        updateEnergyValues(bean);
+        this.updateEnergyValues(bean);
         return bean;
     }
 
@@ -48,9 +56,6 @@ public class RecordService extends CrudService<Record> implements ICrudService<R
         Sensor sensor = record.getSensor();
         Device device = sensor.getDevice();
         Double energy = record.getEnergyConsumption();
-        if (sensor.getMaxValue() < energy) {
-            sensor.setMaxValue(energy);
-        }
         if(device.getMaxEnergyConsumption() < energy) {
             device.setMaxEnergyConsumption(energy);
         }
@@ -74,9 +79,37 @@ public class RecordService extends CrudService<Record> implements ICrudService<R
 
     public List<RecordChart> getSensorRecordsByDay(Long sensorId, String day) {
         List<Record> all = recordRepository.getRecordsBySensorId(sensorId);
+        ZonedDateTime zdt = ZonedDateTime.now();
         return all.stream()
                 .filter(record -> record.getTimestamp().toString().contains(day))
-                .map(record -> new RecordChart(record.getTimestamp().toLocalTime().toString(), record.getEnergyConsumption()))
+                .map(record ->
+                        new RecordChart(Instant.ofEpochMilli(record.getTimestamp()).atZone(ZoneId.from(zdt)).toLocalDateTime().toLocalTime().toString(), record.getEnergyConsumption()))
                 .collect(Collectors.toList());
+    }
+
+
+    @RabbitListener(queues = RabbitMQConfig.QUEUE)
+    public void receiveRecord(RecordDto recordDto) {
+        if (recordDto != null && sensorService.doesExist(recordDto.getSensorId())) {
+            Long sensorId = recordDto.getSensorId();
+            System.out.println("Message received: <" + recordDto + ">");
+            Sensor sensor = sensorService.findById(sensorId);
+            Record lastRecord = sensorService.getLatestRecord(sensor);
+            if (lastRecord != null) {
+                ZonedDateTime zdt = ZonedDateTime.now();
+                Long t1 = recordDto.getTimestamp();
+                Long t2 = lastRecord.getTimestamp();
+                double peak = (recordDto.getEnergyConsumption() - lastRecord.getEnergyConsumption()) / (t1 - t2);
+//                if (peak > sensor.getMaxValue()) {
+                    System.out.println("Sending notification: <" + recordDto + ">");
+                    Notification notification = new Notification("Energy Consumption too high:  " + peak + "\n");
+                    String username = sensor.getDevice().getUser().getUsername();
+                    notificationService.notify(notification, username);
+//                }
+
+            }
+            Record currentRecord = dtoMapper.getEntity(recordDto);
+            this.create(currentRecord);
+        }
     }
 }

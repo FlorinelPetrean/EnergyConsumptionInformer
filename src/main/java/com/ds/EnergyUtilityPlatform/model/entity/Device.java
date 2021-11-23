@@ -1,15 +1,12 @@
 package com.ds.EnergyUtilityPlatform.model.entity;
 
 
-import com.ds.EnergyUtilityPlatform.model.dto.DeviceDto;
-import com.ds.EnergyUtilityPlatform.model.dto.IDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.DeviceDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.IDto;
 import lombok.*;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
-import java.util.List;
 
 @Entity
 @Getter
