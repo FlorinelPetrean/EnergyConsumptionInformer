@@ -100,12 +100,12 @@ public class RecordService extends CrudService<Record> {
                 Long t1 = recordDto.getTimestamp();
                 Long t2 = lastRecord.getTimestamp();
                 double peak = (recordDto.getEnergyConsumption() - lastRecord.getEnergyConsumption()) / (t1 - t2);
-//                if (peak > sensor.getMaxValue()) {
+                if (peak > sensor.getMaxValue()) {
                     System.out.println("Sending notification: <" + recordDto + ">");
                     Notification notification = new Notification("Energy Consumption too high:  " + peak + "\n");
                     String username = sensor.getDevice().getUser().getUsername();
                     notificationService.notify(notification, username);
-//                }
+                }
 
             }
             Record currentRecord = dtoMapper.getEntity(recordDto);
