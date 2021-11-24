@@ -1,8 +1,8 @@
 package com.ds.EnergyUtilityPlatform.model.entity;
 
 
-import com.ds.EnergyUtilityPlatform.model.dto.IDto;
-import com.ds.EnergyUtilityPlatform.model.dto.SensorDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.IDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.SensorDto;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class Sensor implements IEntity<Sensor>{
     private String description;
 
     @Column
-    private Long maxValue;
+    private Double maxValue;
 
     @OneToOne(cascade = CascadeType.MERGE) //do not change this
     @JoinColumn(name = "device_id", referencedColumnName = "id")

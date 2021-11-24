@@ -18,7 +18,7 @@ public class DeviceService extends CrudService<Device> {
     private final DeviceRepository deviceRepository;
     private final UserService userService;
     private final SensorService sensorService;
-    public DeviceService(CrudRepository<Device> crudRepository, BeanUtil<Device> beanUtil, UserService userService, @Lazy SensorService sensorService) {
+    public DeviceService(CrudRepository<Device> crudRepository, BeanUtil<Device> beanUtil, UserService userService, SensorService sensorService) {
         super(crudRepository, beanUtil);
         this.deviceRepository = (DeviceRepository) crudRepository;
         this.userService = userService;
@@ -34,8 +34,8 @@ public class DeviceService extends CrudService<Device> {
             AppUser user = userService.findByUsername(username);
             bean.setUser(user);
             bean.setAddress(user.getAddress());
-            bean.setAvgEnergyConsumption(0.0f);
-            bean.setMaxEnergyConsumption(0L);
+            bean.setAvgEnergyConsumption(0.0);
+            bean.setMaxEnergyConsumption(0.0);
         }
         return super.create(bean);
     }

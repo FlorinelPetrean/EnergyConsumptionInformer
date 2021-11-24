@@ -55,6 +55,8 @@ public class AuthFilter extends OncePerRequestFilter {
             return true;
         if (path.equals("/api/user/login"))
             return true;
+        if(path.contains("/ws"))
+            return true;
         return false;
     }
 }

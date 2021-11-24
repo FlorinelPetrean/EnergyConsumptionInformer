@@ -1,7 +1,8 @@
 package com.ds.EnergyUtilityPlatform.model.dto;
 
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.*;
 import com.ds.EnergyUtilityPlatform.model.entity.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ds.EnergyUtilityPlatform.model.entity.Record;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 

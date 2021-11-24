@@ -1,6 +1,8 @@
 package com.ds.EnergyUtilityPlatform.controller;
 
 import com.ds.EnergyUtilityPlatform.model.dto.*;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.DeviceDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.UserDto;
 import com.ds.EnergyUtilityPlatform.model.entity.AppUser;
 import com.ds.EnergyUtilityPlatform.model.entity.Device;
 import com.ds.EnergyUtilityPlatform.service.ICrudService;
@@ -36,7 +38,7 @@ public class UserController extends CrudController<AppUser, UserDto> {
     }
 
     @GetMapping(path = "/{username}/totalEnergy")
-    public Float getUserTotalEnergy(@PathVariable String username) {
+    public Double getUserTotalEnergy(@PathVariable String username) {
         return userService.getEnergyConsumption(username);
     }
 

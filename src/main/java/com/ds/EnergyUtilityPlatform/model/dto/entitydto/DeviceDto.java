@@ -1,4 +1,4 @@
-package com.ds.EnergyUtilityPlatform.model.dto;
+package com.ds.EnergyUtilityPlatform.model.dto.entitydto;
 
 
 import com.ds.EnergyUtilityPlatform.model.entity.Device;
@@ -11,16 +11,16 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeviceDto implements IDto<Device>{
+public class DeviceDto implements IDto<Device> {
     private Long id;
 
     private String description;
 
     private String address;
 
-    private Long maxEnergyConsumption;
+    private Double maxEnergyConsumption;
 
-    private Float avgEnergyConsumption;
+    private Double avgEnergyConsumption;
 
     private String username;
 

@@ -1,4 +1,4 @@
-package com.ds.EnergyUtilityPlatform.model.dto;
+package com.ds.EnergyUtilityPlatform.model.dto.entitydto;
 
 import com.ds.EnergyUtilityPlatform.model.entity.AppUser;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto implements IDto<AppUser>{
+public class UserDto implements IDto<AppUser> {
     private Long id;
 
     private String username;

@@ -1,8 +1,8 @@
 package com.ds.EnergyUtilityPlatform.controller;
 
 import com.ds.EnergyUtilityPlatform.model.dto.DtoMapper;
-import com.ds.EnergyUtilityPlatform.model.dto.RecordDto;
-import com.ds.EnergyUtilityPlatform.model.dto.SensorDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.RecordDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.SensorDto;
 import com.ds.EnergyUtilityPlatform.model.entity.Record;
 import com.ds.EnergyUtilityPlatform.model.entity.Sensor;
 import com.ds.EnergyUtilityPlatform.service.ICrudService;

@@ -1,6 +1,6 @@
 package com.ds.EnergyUtilityPlatform.controller;
 
-import com.ds.EnergyUtilityPlatform.model.dto.DeviceDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.DeviceDto;
 import com.ds.EnergyUtilityPlatform.model.dto.DtoMapper;
 import com.ds.EnergyUtilityPlatform.model.entity.Device;
 import com.ds.EnergyUtilityPlatform.service.DeviceService;

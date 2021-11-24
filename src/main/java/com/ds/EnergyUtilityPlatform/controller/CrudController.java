@@ -2,7 +2,7 @@ package com.ds.EnergyUtilityPlatform.controller;
 
 
 import com.ds.EnergyUtilityPlatform.model.dto.DtoMapper;
-import com.ds.EnergyUtilityPlatform.model.dto.IDto;
+import com.ds.EnergyUtilityPlatform.model.dto.entitydto.IDto;
 import com.ds.EnergyUtilityPlatform.service.ICrudService;
 import com.ds.EnergyUtilityPlatform.utils.Constants;
 import lombok.RequiredArgsConstructor;
