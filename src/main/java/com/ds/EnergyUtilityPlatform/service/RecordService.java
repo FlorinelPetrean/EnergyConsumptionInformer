@@ -81,9 +81,8 @@ public class RecordService extends CrudService<Record> {
         List<Record> all = recordRepository.getRecordsBySensorId(sensorId);
         ZonedDateTime zdt = ZonedDateTime.now();
         return all.stream()
-                .filter(record -> record.getTimestamp().toString().contains(day))
-                .map(record ->
-                        new RecordChart(Instant.ofEpochMilli(record.getTimestamp()).atZone(ZoneId.from(zdt)).toLocalDateTime().toLocalTime().toString(), record.getEnergyConsumption()))
+                .filter(record -> LocalDateTime.ofInstant(Instant.ofEpochMilli(record.getTimestamp()), ZoneOffset.UTC).toString().contains(day))
+                .map(record -> new RecordChart(LocalDateTime.ofInstant(Instant.ofEpochMilli(record.getTimestamp()), ZoneOffset.UTC).toLocalTime().toString(), record.getEnergyConsumption()))
                 .collect(Collectors.toList());
     }
 
