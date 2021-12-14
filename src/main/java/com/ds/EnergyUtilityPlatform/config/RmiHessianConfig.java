@@ -14,7 +14,7 @@ import org.springframework.remoting.support.RemoteExporter;
 public class RmiHessianConfig {
     private final RmiServiceImpl rmiServiceImpl;
 
-    @Bean(name = "/rmihessianservice")
+    @Bean(name = "/rmi")
     RemoteExporter sayHelloServiceHessian() {
         HessianServiceExporter exporter = new HessianServiceExporter();
         exporter.setService(rmiServiceImpl);

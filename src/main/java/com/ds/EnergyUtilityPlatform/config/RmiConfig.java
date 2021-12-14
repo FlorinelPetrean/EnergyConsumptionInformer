@@ -8,12 +8,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.remoting.rmi.RmiServiceExporter;
 import org.springframework.remoting.support.RemoteExporter;
 
-@Configuration
+//@Configuration
 @RequiredArgsConstructor
 public class RmiConfig {
     private final RmiServiceImpl rmiServiceImpl;
 
-    @Bean
+    //@Bean
     RemoteExporter registerRMIExporter() {
         //default port 1099
         RmiServiceExporter exporter = new RmiServiceExporter();
