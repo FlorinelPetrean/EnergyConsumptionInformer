@@ -1,7 +1,6 @@
 package com.ds.EnergyUtilityPlatform.rmi;
 
 import com.ds.EnergyUtilityPlatform.model.dto.RecordChart;
-import com.ds.EnergyUtilityPlatform.model.dto.entitydto.RecordDto;
 import com.ds.EnergyUtilityPlatform.model.entity.AppUser;
 
 import java.util.List;
