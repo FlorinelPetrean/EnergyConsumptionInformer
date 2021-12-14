@@ -57,6 +57,8 @@ public class AuthFilter extends OncePerRequestFilter {
             return true;
         if(path.contains("/ws"))
             return true;
+        if(path.contains("/rmi"))
+            return true;
         return false;
     }
 }
