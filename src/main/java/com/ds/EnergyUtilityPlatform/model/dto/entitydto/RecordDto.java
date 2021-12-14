@@ -21,8 +21,8 @@ public class RecordDto implements IDto<Record> {
 
     private Long id;
 
-    private Long timestamp;
-//    private String timestamp;
+//    private Long timestamp;
+    private String timestamp;
 
     private Double energyConsumption;
 
@@ -34,12 +34,12 @@ public class RecordDto implements IDto<Record> {
         Long sensorId = null;
         if (record.getSensor() != null)
             sensorId = record.getSensor().getId();
-        DateTimeFormatter format = DateTimeFormatter.ISO_DATE_TIME;
-        ZonedDateTime zdt = ZonedDateTime.now();
+  /*      DateTimeFormatter format = DateTimeFormatter.ISO_DATE_TIME;
+        ZonedDateTime zdt = ZonedDateTime.now();*/
         return builder()
                 .id(record.getId())
                 .energyConsumption(record.getEnergyConsumption())
-                .timestamp(record.getTimestamp())
+                .timestamp(String.valueOf(record.getDate()))
                 .sensorId(sensorId)
                 .build();
     }

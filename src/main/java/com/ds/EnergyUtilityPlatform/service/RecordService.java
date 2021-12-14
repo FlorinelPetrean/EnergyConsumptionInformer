@@ -81,8 +81,8 @@ public class RecordService extends CrudService<Record> {
         List<Record> all = recordRepository.getRecordsBySensorId(sensorId);
         ZonedDateTime zdt = ZonedDateTime.now();
         return all.stream()
-                .filter(record -> LocalDateTime.ofInstant(Instant.ofEpochMilli(record.getTimestamp()), ZoneOffset.UTC).toString().contains(day))
-                .map(record -> new RecordChart(LocalDateTime.ofInstant(Instant.ofEpochMilli(record.getTimestamp()), ZoneOffset.UTC).toLocalTime().toString(), record.getEnergyConsumption()))
+                .filter(record -> record.getDate().toString().contains(day))
+                .map(record -> new RecordChart(record.getDate().toLocalTime().toString(), record.getEnergyConsumption()))
                 .collect(Collectors.toList());
     }
 
@@ -96,7 +96,7 @@ public class RecordService extends CrudService<Record> {
             Record lastRecord = sensorService.getLatestRecord(sensor);
             if (lastRecord != null) {
                 ZonedDateTime zdt = ZonedDateTime.now();
-                Long t1 = recordDto.getTimestamp();
+                Long t1 = Long.valueOf(recordDto.getTimestamp());
                 Long t2 = lastRecord.getTimestamp();
                 double peak = (recordDto.getEnergyConsumption() - lastRecord.getEnergyConsumption()) / (t1 - t2);
                 if (peak > sensor.getMaxValue()) {

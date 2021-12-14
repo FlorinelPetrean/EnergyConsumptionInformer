@@ -8,10 +8,7 @@ import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 
 @Entity
@@ -38,6 +35,11 @@ public class Record implements IEntity<Record>{
     private Sensor sensor;
 
 
+    public LocalDateTime getDate() {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(this.timestamp), ZoneOffset.UTC);
+    }
+
+
     @Override
     public Record toEntity(IDto<Record> dto) {
         RecordDto recordDto = (RecordDto) dto;
@@ -47,7 +49,7 @@ public class Record implements IEntity<Record>{
         ZonedDateTime zdt = ZonedDateTime.now();
         return Record.builder()
                 .energyConsumption(recordDto.getEnergyConsumption())
-                .timestamp(recordDto.getTimestamp())
+                .timestamp(Long.valueOf(recordDto.getTimestamp()))
                 .sensor(sensor)
                 .build();
     }
