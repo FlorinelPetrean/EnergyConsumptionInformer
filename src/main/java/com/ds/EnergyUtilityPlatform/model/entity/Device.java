@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @Component
 @AllArgsConstructor
 @NoArgsConstructor
-public class Device implements IEntity<Device>{
+public class Device implements IEntity<Device> {
     @Id
     @Column
     @GeneratedValue(strategy=GenerationType.AUTO)

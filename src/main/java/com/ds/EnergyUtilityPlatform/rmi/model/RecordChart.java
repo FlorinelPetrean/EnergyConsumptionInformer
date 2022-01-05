@@ -1,13 +1,16 @@
-package com.ds.EnergyUtilityPlatform.model.dto;
+package com.ds.EnergyUtilityPlatform.rmi.model;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class RecordChart implements Serializable {
     private String timestamp;
     private Double energyConsumption;
