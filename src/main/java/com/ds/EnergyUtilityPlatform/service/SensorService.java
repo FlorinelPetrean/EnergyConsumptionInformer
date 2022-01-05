@@ -77,13 +77,11 @@ public class SensorService extends CrudService<Sensor> {
     public Record getLatestRecord(Sensor sensor) {
         List<Record> records = sensor.getRecords();
         Record latestRecord = null;
-        ZonedDateTime zdt = ZonedDateTime.now();
-        long now = LocalDateTime.now().toInstant(ZoneOffset.from(zdt)).toEpochMilli();
-        long min = now;
+        long max = 0L;
         for (Record record: records) {
             long recordTimestamp = record.getTimestamp();
-            if(min > now - recordTimestamp) {
-                min = now - recordTimestamp;
+            if(max < recordTimestamp) {
+                max = recordTimestamp;
                 latestRecord = record;
             }
         }

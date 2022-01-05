@@ -7,6 +7,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.List;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class AppUser implements IEntity<AppUser>{
+public class AppUser implements IEntity<AppUser> {
 //    @Id
 //    @Column(name ="id", columnDefinition = "serial")
 //    @GeneratedValue(strategy=GenerationType.SEQUENCE)
@@ -51,7 +52,7 @@ public class AppUser implements IEntity<AppUser>{
     private String role;
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Device> devices;
 
 

@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
-public class NotificationService {
+public class
+NotificationService {
 
     // The SimpMessagingTemplate is used to send Stomp over WebSocket messages.
     private final SimpMessagingTemplate messagingTemplate;

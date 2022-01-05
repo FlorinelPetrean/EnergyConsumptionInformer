@@ -29,6 +29,7 @@ public class RecordService extends CrudService<Record> {
     private final DeviceService deviceService;
     private final DtoMapper dtoMapper;
     private final NotificationService notificationService;
+
     public RecordService(CrudRepository<Record> crudRepository, BeanUtil<Record> beanUtil, SensorService sensorService, SensorRepository sensorRepository, DeviceService deviceService, DtoMapper dtoMapper, NotificationService notificationService) {
         super(crudRepository, beanUtil);
         this.recordRepository = (RecordRepository) crudRepository;
@@ -79,25 +80,23 @@ public class RecordService extends CrudService<Record> {
 
     public List<RecordChart> getSensorRecordsByDay(Long sensorId, String day) {
         List<Record> all = recordRepository.getRecordsBySensorId(sensorId);
-        ZonedDateTime zdt = ZonedDateTime.now();
         return all.stream()
                 .filter(record -> record.getDate().toString().contains(day))
                 .map(record -> new RecordChart(record.getDate().toLocalTime().toString(), record.getEnergyConsumption()))
                 .collect(Collectors.toList());
     }
 
-
+    private RecordDto lastRecord = null;
     @RabbitListener(queues = RabbitMQConfig.QUEUE)
     public void receiveRecord(RecordDto recordDto) {
         if (recordDto != null && sensorService.doesExist(recordDto.getSensorId())) {
             Long sensorId = recordDto.getSensorId();
             System.out.println("Message received: <" + recordDto + ">");
             Sensor sensor = sensorService.findById(sensorId);
-            Record lastRecord = sensorService.getLatestRecord(sensor);
+            //Record lastRecord = sensorService.getLatestRecord(sensor);
             if (lastRecord != null) {
-                ZonedDateTime zdt = ZonedDateTime.now();
                 Long t1 = Long.valueOf(recordDto.getTimestamp());
-                Long t2 = lastRecord.getTimestamp();
+                Long t2 = Long.valueOf(lastRecord.getTimestamp());
                 double peak = (recordDto.getEnergyConsumption() - lastRecord.getEnergyConsumption()) / (t1 - t2);
                 if (peak > sensor.getMaxValue()) {
                     System.out.println("Sending notification: <" + recordDto + ">");
@@ -106,7 +105,18 @@ public class RecordService extends CrudService<Record> {
                     notificationService.notify(notification, username);
                 }
 
+                Double energyConsumption = recordDto.getEnergyConsumption();
+                recordDto.setEnergyConsumption(recordDto.getEnergyConsumption() - lastRecord.getEnergyConsumption());
+
+                lastRecord = RecordDto.builder()
+                        .sensorId(recordDto.getSensorId())
+                        .energyConsumption(energyConsumption)
+                        .timestamp(recordDto.getTimestamp())
+                        .build();
             }
+            else
+                lastRecord = recordDto;
+
             Record currentRecord = dtoMapper.getEntity(recordDto);
             this.create(currentRecord);
         }
