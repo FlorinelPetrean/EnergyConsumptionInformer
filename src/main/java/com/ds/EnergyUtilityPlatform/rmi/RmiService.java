@@ -9,7 +9,8 @@ import java.util.List;
 public interface RmiService {
     public String sendMessage(String msg);
     public AppUserRmi login(String username, String password);
-    public ChartRecords getDeviceHourlyEnergyConsumptionOverDays(Long deviceId, Long days, Long hour);
+    public ChartRecords getDeviceHourlyEnergyConsumptionOverDays(Long deviceId, Long days);
     public Double getAverageEnergyConsumptionOverWeek(Long deviceId, Long hour);
+    public Long getOptimalHour(Long deviceId, Long programDuration);
     public ChartRecords getProgramChart(Long deviceId, Long programHours);
 }

@@ -14,9 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.time.chrono.ChronoLocalDateTime;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,93 +57,147 @@ public class RmiServiceImpl implements RmiService{
                 .build();
     }
 
+
+
+    public double[] getDeviceHourlyEnergyConsumptionInDay(List<Record> records, LocalDate day) {
+        records = records.stream()
+                .filter(r -> r.getDate().toLocalDate().isEqual(day))
+                .collect(Collectors.toList());
+
+
+        double[] hourlyEnergyConsumptionArray = new double[24];
+        int[] hourlyEnergyConsumptionArrayCount = new int[24];
+        for(Record record : records) {
+            LocalDateTime recordDay = record.getDate();
+            int hour = recordDay.getHour();
+            hourlyEnergyConsumptionArray[hour] += record.getEnergyConsumption();
+            hourlyEnergyConsumptionArrayCount[hour]++;
+        }
+
+        for(int i = 0; i < 24; i++) {
+            hourlyEnergyConsumptionArray[i] /= hourlyEnergyConsumptionArrayCount[i];
+        }
+
+        return hourlyEnergyConsumptionArray;
+    }
+
     @Override
-    public ChartRecords getDeviceHourlyEnergyConsumptionOverDays(Long deviceId, Long days, Long hour) {
+    public ChartRecords getDeviceHourlyEnergyConsumptionOverDays(Long deviceId, Long days) {
         List<RecordChart> chartRecords = new ArrayList<>();
-//        LocalDate filterDate = LocalDate.now(ZoneOffset.UTC).minusDays(days);
         Device device = deviceService.findById(deviceId);
         List<Record> records = device.getSensor().getRecords();
         LocalDate filterDate = records.get(records.size() - 1).getDate().toLocalDate().minusDays(days + 1);
-        records = records.stream()
-                .filter(r -> r.getDate().toLocalDate().isAfter(filterDate) &&
-                        r.getDate().toLocalTime().getHour() == hour)
-                .collect(Collectors.toList());
 
-        int hourlyCount = 0;
-        double hourlyEnergyConsumption = 0.0;
-        LocalDate currentDay = records.get(0).getDate().toLocalDate();
-        for(Record record : records) {
-            LocalDate recordDay = record.getDate().toLocalDate();
-            if (currentDay.isEqual(recordDay)) {
-                hourlyCount += 1;
-                hourlyEnergyConsumption += record.getEnergyConsumption();
-            }
-            else {
-                String localDate = recordDay.toString();
-                hourlyEnergyConsumption /= hourlyCount;
-                RecordChart chartRecord = new RecordChart(localDate, hourlyEnergyConsumption);
-                chartRecords.add(chartRecord);
-
-                hourlyEnergyConsumption = record.getEnergyConsumption();
-                hourlyCount = 1;
-                currentDay = currentDay.plusDays(1);
-            }
-
+        for(long i = 0; i < days; i++) {
+            LocalDate date = filterDate.plusDays(i);
+            Double energyConsumption = Arrays.stream(getDeviceHourlyEnergyConsumptionInDay(records, date))
+                    .sum() / 24;
+            RecordChart chartRecord = new RecordChart(date.toString(), energyConsumption);
+            chartRecords.add(chartRecord);
         }
 
         return new ChartRecords(chartRecords);
     }
 
+
+
     @Override
     public Double getAverageEnergyConsumptionOverWeek(Long deviceId, Long hour) {
         long days = 7L;
-        List<RecordChart> recordCharts = getDeviceHourlyEnergyConsumptionOverDays(deviceId, days, hour).getRecords();
-        return recordCharts.stream()
-                .map(RecordChart::getEnergyConsumption)
-                .reduce(0.0, Double::sum) / days;
+
+        Device device = deviceService.findById(deviceId);
+        List<Record> records = device.getSensor().getRecords();
+        LocalDate filterDate = records.get(records.size() - 1).getDate().toLocalDate().minusDays(days + 1);
+
+        double baseline = 0.0;
+        for(long i = 0; i < days; i++) {
+            LocalDate date = filterDate.plusDays(i);
+            int h = Math.toIntExact(hour);
+            double hourlyEnergyConsumption = getDeviceHourlyEnergyConsumptionInDay(records, date)[h];
+            baseline += hourlyEnergyConsumption;
+        }
+        baseline /= days;
+
+        return baseline;
     }
 
 
     public Double getMaxEnergyConsumptionOverWeek(Long deviceId, Long hour) {
         long days = 7L;
-        double baseline = getAverageEnergyConsumptionOverWeek(deviceId, hour);
-        List<RecordChart> recordCharts = getDeviceHourlyEnergyConsumptionOverDays(deviceId, days, hour).getRecords();
-        return recordCharts.stream()
-                .map(r -> r.getEnergyConsumption() + baseline)
-                .reduce(0.0, Double::max);
+
+        Device device = deviceService.findById(deviceId);
+        List<Record> records = device.getSensor().getRecords();
+        LocalDate filterDate = records.get(records.size() - 1).getDate().toLocalDate().minusDays(days + 1);
+
+        double maxValue = 0.0;
+        for(long i = 0; i < days; i++) {
+            LocalDate date = filterDate.plusDays(i);
+            int h = Math.toIntExact(hour);
+            double hourlyEnergyConsumption = getDeviceHourlyEnergyConsumptionInDay(records, date)[h];
+            if (maxValue < hourlyEnergyConsumption) {
+                maxValue = hourlyEnergyConsumption;
+            }
+        }
+        return maxValue;
     }
 
+
     @Override
-    public ChartRecords getProgramChart(Long deviceId, Long programHours) {
-        long days = 7L;
+    public Long getOptimalHour(Long deviceId, Long programDuration) {
+
+        double[] baselines = new double[24];
+        double[] maxValues = new double[24];
+        for(int i = 0; i < 24; i++){
+            baselines[i] = getAverageEnergyConsumptionOverWeek(deviceId, (long) i);
+            maxValues[i] = getMaxEnergyConsumptionOverWeek(deviceId, (long) i);
+        }
         long optimalHour = 0L;
         double minimum = Double.MAX_VALUE;
         List<RecordChart> records = new ArrayList<>();
 
-        for(long i = 0; i < 24 - programHours; i++) {
+        for(int i = 0; i < 24 - programDuration; i++) {
             double currentMinimum = 0L;
-            for(long h = i; h < i + programHours; h++) {
-                double maximum = getMaxEnergyConsumptionOverWeek(deviceId, h);
-                currentMinimum += maximum;
+            for(int h = i; h < i + programDuration; h++) {
+                if(currentMinimum < baselines[h] + maxValues[i]) {
+                    currentMinimum = baselines[h] + maxValues[i];
+                }
             }
-            currentMinimum /= programHours;
 
             if (minimum > currentMinimum) {
                 minimum = currentMinimum;
                 optimalHour = i;
             }
         }
-        for(long i = 0; i < 24; i++) {
-            RecordChart recordChart = new RecordChart("", 0.0);
-            if (i >= optimalHour && i <= optimalHour + programHours)
-                recordChart.setEnergyConsumption(minimum);
-            else
-                recordChart.setEnergyConsumption(getAverageEnergyConsumptionOverWeek(deviceId, i));
-            recordChart.setTimestamp(i + ":00");
 
-            records.add(recordChart);
+        return optimalHour;
+    }
+
+    @Override
+    public ChartRecords getProgramChart(Long deviceId, Long programHours) {
+        long days = 7L;
+        Long optimalHour = getOptimalHour(deviceId, programHours);
+
+        Device device = deviceService.findById(deviceId);
+        List<Record> records = device.getSensor().getRecords();
+
+        List<RecordChart> recordsChart = new ArrayList<>();
+
+        double[] baselines = new double[24];
+        double[] maxValues = new double[24];
+        for(int i = 0; i < 24; i++){
+            baselines[i] = getAverageEnergyConsumptionOverWeek(deviceId, (long) i);
+            maxValues[i] = getMaxEnergyConsumptionOverWeek(deviceId, (long) i);
         }
 
-        return new ChartRecords(records);
+        for(long hour = optimalHour; hour < optimalHour + programHours; hour++) {
+            String hourString = hour + ":00";
+            int h = (int) hour;
+            double energyConsumption = baselines[h] + maxValues[h];
+            RecordChart recordChart = new RecordChart(hourString, energyConsumption);
+            recordsChart.add(recordChart);
+        }
+
+
+        return new ChartRecords(recordsChart);
     }
 }
