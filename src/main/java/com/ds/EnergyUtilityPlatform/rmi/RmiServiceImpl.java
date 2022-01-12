@@ -144,12 +144,12 @@ public class RmiServiceImpl implements RmiService{
 
     @Override
     public Long getOptimalHour(Long deviceId, Long programDuration) {
-
+        Device device = deviceService.findById(deviceId);
         double[] baselines = new double[24];
         double[] maxValues = new double[24];
         for(int i = 0; i < 24; i++){
             baselines[i] = getAverageEnergyConsumptionOverWeek(deviceId, (long) i);
-            maxValues[i] = getMaxEnergyConsumptionOverWeek(deviceId, (long) i);
+            maxValues[i] = device.getMaxEnergyConsumption();
         }
         long optimalHour = 0L;
         double minimum = Double.MAX_VALUE;
@@ -186,7 +186,7 @@ public class RmiServiceImpl implements RmiService{
         double[] maxValues = new double[24];
         for(int i = 0; i < 24; i++){
             baselines[i] = getAverageEnergyConsumptionOverWeek(deviceId, (long) i);
-            maxValues[i] = getMaxEnergyConsumptionOverWeek(deviceId, (long) i);
+            maxValues[i] = device.getMaxEnergyConsumption();
         }
 
         for(long hour = optimalHour; hour < optimalHour + programHours; hour++) {
