@@ -12,6 +12,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class RecordChart implements Serializable {
-    private String timestamp;
-    private Double energyConsumption;
+    public String timestamp;
+    public Double energyConsumption;
 }

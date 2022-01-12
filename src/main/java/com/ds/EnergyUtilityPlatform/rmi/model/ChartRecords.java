@@ -12,5 +12,5 @@ import java.util.List;
 @Getter
 @Setter
 public class ChartRecords implements Serializable {
-    private List<RecordChart> records;
+    public List<RecordChart> records;
 }

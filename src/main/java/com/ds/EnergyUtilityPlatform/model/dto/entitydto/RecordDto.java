@@ -39,7 +39,7 @@ public class RecordDto implements IDto<Record> {
         return builder()
                 .id(record.getId())
                 .energyConsumption(record.getEnergyConsumption())
-                .timestamp(String.valueOf(record.getDate()))
+                .timestamp(String.valueOf(record.getTimestamp()))
                 .sensorId(sensorId)
                 .build();
     }
