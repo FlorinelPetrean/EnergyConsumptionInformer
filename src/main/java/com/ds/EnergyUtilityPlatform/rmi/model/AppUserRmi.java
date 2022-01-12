@@ -13,18 +13,18 @@ import java.util.List;
 @Builder
 public class AppUserRmi implements Serializable {
 
-    private String username;
+    public String username;
 
-    private String firstName;
+    public String firstName;
 
-    private String lastName;
+    public String lastName;
 
-    private String address;
+    public String address;
 
-    private Date dateOfBirth;
+    public Date dateOfBirth;
 
-    private String role;
+    public String role;
 
-    private List<DeviceRmi> devices;
+    public List<DeviceRmi> devices;
 
 }

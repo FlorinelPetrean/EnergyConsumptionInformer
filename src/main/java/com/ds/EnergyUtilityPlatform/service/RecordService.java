@@ -82,7 +82,7 @@ public class RecordService extends CrudService<Record> {
         List<Record> all = recordRepository.getRecordsBySensorId(sensorId);
         return all.stream()
                 .filter(record -> record.getDate().toString().contains(day))
-                .map(record -> new RecordChart(record.getDate().toLocalTime().toString(), record.getEnergyConsumption()))
+                .map(record -> new RecordChart(record.getTimestamp().toString(), record.getEnergyConsumption()))
                 .collect(Collectors.toList());
     }
 

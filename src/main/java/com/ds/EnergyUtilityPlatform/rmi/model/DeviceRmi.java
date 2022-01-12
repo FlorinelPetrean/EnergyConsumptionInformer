@@ -10,14 +10,14 @@ import java.io.Serializable;
 @Setter
 @Builder
 public class DeviceRmi implements Serializable {
-    private Long id;
+    public Long id;
 
-    private String description;
+    public String description;
 
-    private String address;
+    public String address;
 
-    private Double maxEnergyConsumption;
+    public Double maxEnergyConsumption;
 
-    private Double avgEnergyConsumption;
+    public Double avgEnergyConsumption;
 
 }
